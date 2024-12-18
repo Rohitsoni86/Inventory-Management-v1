@@ -1,0 +1,85 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Dancing+Script:wght@400..700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  /* font-family: "Quicksand", sans-serif !important; */
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 10px;
+  background-color: rgba(255, 254, 254, 0.301);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(236, 232, 232, 0.301);
+  border-radius: 5px;
+}
+
+/* Disable autofill background color */
+input:-webkit-autofill {
+  background-color: transparent !important;
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+  box-shadow: 0 0 0px 1000px white inset !important;
+}
+
+/* Fix autofill background color of input and textarea fields */
+input:-webkit-autofill,
+textarea:-webkit-autofill {
+  background-color: #fff !important;
+  color: #333 !important; /* Customize color as needed */
+  transition: background-color 5000s ease-in-out 0s !important;
+}
+
+body {
+  font-family: "Noto Sans", sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Fallback Ui */
+
+.fallback-ui {
+  padding: 20px;
+  text-align: center;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.fallback-ui h1 {
+  font-size: 2rem;
+}
+
+.fallback-ui p {
+  font-size: 1.1rem;
+}
+
+.fallback-ui button {
+  padding: 10px 20px;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.fallback-ui button:hover {
+  background-color: #005bb5;
+}
