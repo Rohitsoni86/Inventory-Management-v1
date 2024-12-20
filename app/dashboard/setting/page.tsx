@@ -13,14 +13,14 @@ import WestIcon from "@mui/icons-material/West";
 import { useRouter } from "next/navigation";
 import LockResetIcon from "@mui/icons-material/LockReset";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import AdminDetailsForm from "./ProfilePage/ProfileDetails";
 import SignUpFields from "@/models/userSignUpModel";
 import { useFormik } from "formik";
 import { SignUpSchema } from "@/schema/userSignupSchema";
 import { useAppContext } from "@/app/providers/app-context";
-import OrganizationDetails from "./ProfilePage/OrganizationDetails";
+import AdminDetailsForm from "./components/ProfileDetails";
+import OrganizationDetails from "./components/OrganizationDetails";
 
-const ProfilePage = () => {
+const SettingsPage = () => {
   const theme = useTheme();
   const router = useRouter();
 
@@ -235,4 +235,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default SettingsPage;

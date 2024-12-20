@@ -1,3 +1,4 @@
+"use client"
 import SignUpFields from "@/models/userSignUpModel";
 import { Grid2 } from "@mui/material";
 import { FormikProps } from "formik";

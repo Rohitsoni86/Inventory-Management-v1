@@ -401,13 +401,13 @@ export default function DashboardLayout({
                 <MenuIcon sx={{ width: 30, height: 30 }} />
               </IconButton>
             )}
-           <Image
-            src="/InventoLogo.svg"
-            width={90}
-            height={60}
-            alt="Invento Logo"
-            priority={true}
-          />
+            <Image
+              src="/InventoLogo.svg"
+              width={90}
+              height={60}
+              alt="Invento Logo"
+              priority={true}
+            />
           </Box>
           <Box
             sx={{
@@ -475,22 +475,22 @@ export default function DashboardLayout({
         </Toolbar>
       </AppBar>
       <Drawer
-       variant={isDesktop ? "permanent" : "temporary"}
-       open={open}
-       onClose={handleDrawerClose}
-       sx={{
-         width: open ? drawerWidth : 0,
-         background: theme.palette.primary.main,
-         flexShrink: 0,
-         [`& .MuiDrawer-paper`]: {
-           width: drawerWidth,
-           boxSizing: "border-box",
-           background: theme.palette.primary.main,
-           color: theme.palette.common.white,
-           transition: "transform 0.1s ease",
-           transform: open ? "translateX(0)" : "translateX(-100%)",
-         },
-       }}
+        variant={isDesktop ? "permanent" : "temporary"}
+        open={open}
+        onClose={handleDrawerClose}
+        sx={{
+          width: open ? drawerWidth : 0,
+          background: theme.palette.primary.main,
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: {
+            width: drawerWidth,
+            boxSizing: "border-box",
+            background: theme.palette.primary.main,
+            color: theme.palette.common.white,
+            transition: "transform 0.1s ease",
+            transform: open ? "translateX(0)" : "translateX(-100%)",
+          },
+        }}
       >
         <Toolbar />
 
@@ -570,8 +570,6 @@ export default function DashboardLayout({
                         }}
                       >
                         {route?.children.map((item, index) => {
-
-
                           return (
                             <Link
                               href={`/dashboard/${route.name.toLowerCase()}/${item.name.toLowerCase().split(" ").join("-")}`}
