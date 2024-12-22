@@ -65,6 +65,7 @@ export default function DashboardLayout({
   const [openRoutes, setOpenRoutes] = useState<{ [key: string]: boolean }>({
     Products: false,
     Sales: false,
+    Members: false,
   });
 
   const handleToggleCollapse = (routeName: string) => {
@@ -236,7 +237,7 @@ export default function DashboardLayout({
       ],
     },
     {
-      name: "Manage Members",
+      name: "Members",
       icon: (
         <Icon>
           <Image
@@ -247,6 +248,34 @@ export default function DashboardLayout({
           />
         </Icon>
       ),
+      children: [
+        {
+          name: "Customers",
+          icon: (
+            <Icon>
+              <Image
+                src={"/Icons/customizable.svg"}
+                alt="product"
+                width={22}
+                height={27}
+              />
+            </Icon>
+          ),
+        },
+        {
+          name: "Employees",
+          icon: (
+            <Icon>
+              <Image
+                src={"/Icons/accuracyBoost.svg"}
+                alt="product"
+                width={22}
+                height={27}
+              />
+            </Icon>
+          ),
+        },
+      ],
     },
   ];
 
@@ -319,6 +348,12 @@ export default function DashboardLayout({
       setActive("Monthly Sales");
     } else if (pathname.startsWith("/dashboard/sales/sales-daily")) {
       setActive("Daily Sales");
+    } else if (pathname.startsWith("/dashboard/members/customers")) {
+      setActive("Customers");
+    } else if (pathname.startsWith("/dashboard/members/employees")) {
+      setActive("Employees");
+    } else if (pathname.startsWith("/dashboard/support")) {
+      setActive("Support");
     } else {
       setActive("Dashboard");
     }

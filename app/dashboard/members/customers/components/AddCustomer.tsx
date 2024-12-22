@@ -217,7 +217,10 @@ export default function AddCustomer() {
         <Grid2 container spacing={2}>
           <Grid2
             size={{
-              xs: 6,
+              xs: 12,
+              sm: 4,
+              md: 4,
+              lg: 4,
             }}
           >
             {/* Customer Name */}
@@ -237,7 +240,15 @@ export default function AddCustomer() {
                 helperText={touched.customerName && errors.customerName}
               />
             </Box>
-
+          </Grid2>
+          <Grid2
+            size={{
+              xs: 12,
+              sm: 4,
+              md: 4,
+              lg: 4,
+            }}
+          >
             {/* Customer Email */}
             <Box>
               <InputLabel required>Email</InputLabel>
@@ -255,7 +266,15 @@ export default function AddCustomer() {
                 helperText={touched.customerEmail && errors.customerEmail}
               />
             </Box>
-
+          </Grid2>
+          <Grid2
+            size={{
+              xs: 12,
+              sm: 4,
+              md: 4,
+              lg: 4,
+            }}
+          >
             {/* Customer Phone */}
             <Box>
               <InputLabel required>Phone No.</InputLabel>
@@ -280,7 +299,15 @@ export default function AddCustomer() {
                 }}
               />
             </Box>
-
+          </Grid2>
+          <Grid2
+            size={{
+              xs: 12,
+              sm: 4,
+              md: 4,
+              lg: 4,
+            }}
+          >
             <Box>
               <InputLabel required>Gender</InputLabel>
               <FormControl
@@ -311,9 +338,13 @@ export default function AddCustomer() {
               </FormControl>
             </Box>
           </Grid2>
+
           <Grid2
             size={{
-              xs: 6,
+              xs: 12,
+              sm: 4,
+              md: 4,
+              lg: 4,
             }}
           >
             <Box>
@@ -356,13 +387,16 @@ export default function AddCustomer() {
                 }}
               />
             </Box>
-
-            <Box
-              sx={{
-                display: "flex",
-                gap: 2,
-              }}
-            >
+          </Grid2>
+          <Grid2
+            size={{
+              xs: 12,
+              sm: 4,
+              md: 4,
+              lg: 4,
+            }}
+          >
+            <Box sx={{ display: "flex", gap: 2 }}>
               <Box>
                 <InputLabel required>Country</InputLabel>
                 <TextField
@@ -408,6 +442,15 @@ export default function AddCustomer() {
                 />
               </Box>
             </Box>
+          </Grid2>
+          <Grid2
+            size={{
+              xs: 12,
+              sm: 4,
+              md: 4,
+              lg: 4,
+            }}
+          >
             <Box>
               <InputLabel required>City</InputLabel>
               <TextField
@@ -428,6 +471,15 @@ export default function AddCustomer() {
                 }
               />
             </Box>
+          </Grid2>
+          <Grid2
+            size={{
+              xs: 12,
+              sm: 4,
+              md: 4,
+              lg: 4,
+            }}
+          >
             {/* Customer Address */}
             <Box>
               <InputLabel>Address</InputLabel>
@@ -448,9 +500,13 @@ export default function AddCustomer() {
               />
             </Box>
           </Grid2>
+
           <Grid2
-            size={{
+             size={{
               xs: 12,
+              sm: 4,
+              md: 4,
+              lg: 4,
             }}
           >
             {/* Customer Balance */}
@@ -476,15 +532,16 @@ export default function AddCustomer() {
         </Grid2>
 
         {/* Submit Button */}
-        <Box sx={{ p: 1, mt: 2 }}>
+        <Box sx={{ p: 1, mt: 2,textAlign:"right" }}>
           <Button
             type="submit"
             variant="contained"
             sx={{
               px: 11,
-              display: "flex",
-              justifyContent: "center",
-              width: "100%",
+              width: {
+                xs:"100%",
+                md:"30%"
+              },
             }}
             size="small"
           >

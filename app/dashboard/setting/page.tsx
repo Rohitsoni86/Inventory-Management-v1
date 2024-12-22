@@ -19,6 +19,7 @@ import { SignUpSchema } from "@/schema/userSignupSchema";
 import { useAppContext } from "@/app/providers/app-context";
 import AdminDetailsForm from "./components/ProfileDetails";
 import OrganizationDetails from "./components/OrganizationDetails";
+import OrganizationAddressSettings from "./components/OrganizationAddress";
 
 const SettingsPage = () => {
   const theme = useTheme();
@@ -68,6 +69,11 @@ const SettingsPage = () => {
   const { setMessage, setOpenToastError, setOpenToastSuccess } =
     useAppContext();
 
+    const featureUnavailable = () => {
+      setOpenToastError(true)
+      setMessage("This feature is not available right now !")
+    }
+
   return (
     <Grid2 container spacing={2}>
       <Grid2
@@ -116,7 +122,7 @@ const SettingsPage = () => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            p: 2,
+            px: 2,
           }}
         >
           <Box
@@ -188,6 +194,7 @@ const SettingsPage = () => {
               fullWidth
               size="medium"
               startIcon={<LockResetIcon />}
+              onClick={featureUnavailable}
             >
               Reset Password
             </Button>
@@ -197,6 +204,7 @@ const SettingsPage = () => {
               fullWidth
               size="medium"
               startIcon={<ManageAccountsIcon />}
+              onClick={featureUnavailable}
             >
               Change Profile Picture
             </Button>
@@ -229,8 +237,49 @@ const SettingsPage = () => {
           errors={errors}
           touched={touched}
           setFieldValue={setFieldValue}
+          
         />
       </Grid2>
+      <Grid2
+        size={{
+          xs: 12,
+        }}
+      >
+        <OrganizationAddressSettings
+          values={values}
+          handleChange={handleChange}
+          handleBlur={handleBlur}
+          errors={errors}
+          touched={touched}
+          setFieldValue={setFieldValue}
+          setValues={setValues}
+        />
+      </Grid2>
+      <Grid2
+          size={{
+            xs: 12,
+            md: 12,
+          }}
+          sx={{
+            display:"flex",
+            justifyContent:"flex-end"
+          }}
+        >
+          <Button
+            type="button"
+            variant="contained"
+            sx={{
+              width:{
+                xs:"100%",
+                md:"30%"
+              }
+            }}
+            size="medium"
+            
+          >
+           Save 
+          </Button>
+        </Grid2>
     </Grid2>
   );
 };

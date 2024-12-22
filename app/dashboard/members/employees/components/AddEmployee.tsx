@@ -21,81 +21,77 @@ import { useFormik } from "formik";
 import React, { useEffect } from "react";
 import * as Yup from "yup"; // Import Yup for validation
 
-interface Customers {
-  customerEmail: string;
-  customerCountryCode?: string;
-  customerPhone: string;
-  customerAddress: string;
-  customerCity: string;
-  customerState: string;
-  customerCountry: string;
-  customerPostalCode: string;
-  customerBalance: number | null;
-  customerFlagCode?: string;
-  customerName: string;
-  customerGender: string;
+interface Employee {
+  employeeName: string;
+  employeeEmail: string;
+  employeePhone: string;
+  employeeAddress: string;
+  employeeCity: string;
+  employeeState: string;
+  employeeCountry: string;
+  employeePostalCode: string;
+  employeeGender: string;
+  employeePassword: string;
+  employeePhoto?: File | null;
 }
 
 // Yup validation schema
-const SignUpSchema = Yup.object({
-  customerName: Yup.string()
+const EmployeeSchema = Yup.object({
+  employeeName: Yup.string()
     .required("Name is required")
     .min(3, "Must be at least 3 characters long")
     .trim()
     .max(30, "Must be less than 30 characters long")
     .matches(/^[a-zA-Z ]*$/, "Must be only alphabets"),
 
-  customerEmail: Yup.string()
+  employeeEmail: Yup.string()
     .email("Invalid email format")
     .required("Email is required"),
 
-  customerPhone: Yup.string()
+  employeePhone: Yup.string()
     .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits")
     .matches(/^\d+$/, "Phone number must only contain digits") // Ensures only digits
     .required("Phone number is required"),
 
-  customerAddress: Yup.string().max(255, "Address can't exceed 255 characters"),
+  employeeAddress: Yup.string().max(255, "Address can't exceed 255 characters"),
 
-  customerBalance: Yup.number()
-    .required("Balance is required")
-    .min(0, "Balance cannot be negative")
-    .max(100000, "Balance cannot exceed limit 100000"),
+  employeeGender: Yup.string().required("Gender is required"),
 
-  customerGender: Yup.string().required("Gender is required"),
-
-  customerCity: Yup.string()
+  employeeCity: Yup.string()
     .required("City is required")
     .matches(/^[a-zA-Z ]*$/, "Must be only alphabets"),
 
-  customerState: Yup.string()
+  employeeState: Yup.string()
     .required("State is required")
     .matches(/^[a-zA-Z ]*$/, "Must be only alphabets"),
 
-  customerCountry: Yup.string()
+  employeeCountry: Yup.string()
     .required("Country is required")
     .matches(/^[a-zA-Z ]*$/, "Must be only alphabets"),
 
-  customerPostalCode: Yup.string()
+  employeePostalCode: Yup.string()
     .required("Postal Code is required")
     .matches(/^[0-9]*$/, "Phone number must be only digits")
     .min(4, "Postal code must be 4 digits long")
     .max(8, "Postal code must not exceed 8 digits"),
+
+  employeePassword: Yup.string()
+    .required("Password is required")
+    .min(6, "Password must be at least 6 characters long"),
 });
 
-export default function AddCustomer() {
-  const initialValues: Customers = {
-    customerName: "",
-    customerEmail: "",
-    customerCountryCode: "+91",
-    customerPhone: "",
-    customerPostalCode: "",
-    customerAddress: "",
-    customerCity: "",
-    customerState: "",
-    customerCountry: "",
-    customerBalance: null,
-    customerFlagCode: "IN",
-    customerGender: "",
+export default function AddEmployee() {
+  const initialValues: Employee = {
+    employeeName: "",
+    employeeEmail: "",
+    employeePhone: "",
+    employeePostalCode: "",
+    employeeAddress: "",
+    employeeCity: "",
+    employeeState: "",
+    employeeCountry: "",
+    employeeGender: "",
+    employeePassword: "",
   };
 
   const {
@@ -107,9 +103,9 @@ export default function AddCustomer() {
     touched,
     setValues,
     setFieldValue,
-  } = useFormik<Customers>({
+  } = useFormik<Employee>({
     initialValues,
-    validationSchema: SignUpSchema,
+    validationSchema: EmployeeSchema,
     onSubmit: async (values) => {
       console.log("Form Submitted", values);
       // You can perform an API call or other logic here
@@ -117,11 +113,6 @@ export default function AddCustomer() {
   });
 
   const theme = useTheme();
-
-  // Handle form submission when button is clicked
-  const handleCreateCustomer = () => {
-    handleSubmit();
-  };
 
   const onPostalCodeSuccess = (data: AxiosResponse) => {
     const capitalize = (str: string) => {
@@ -136,20 +127,20 @@ export default function AddCustomer() {
     if (data?.data[0].Status === "Error") {
       setValues({
         ...values,
-        customerCountry: "",
-        customerCity: "",
-        customerState: "",
+        employeeCountry: "",
+        employeeCity: "",
+        employeeState: "",
       });
     } else {
       setValues({
         ...values,
-        customerCountry: capitalize(
+        employeeCountry: capitalize(
           data?.data[0].PostOffice[0].Country.toLowerCase()
         ),
-        customerCity: capitalize(
+        employeeCity: capitalize(
           data?.data[0].PostOffice[0].District.toLowerCase()
         ),
-        customerState: capitalize(
+        employeeState: capitalize(
           data?.data[0].PostOffice[0].State.toLowerCase()
         ),
       });
@@ -162,15 +153,15 @@ export default function AddCustomer() {
 
   useEffect(() => {
     if (
-      values.customerPostalCode &&
-      values.customerPostalCode.toString().length >= 6
+      values.employeePostalCode &&
+      values.employeePostalCode.toString().length >= 6
     ) {
       const timeOut = setTimeout(() => {
-        postalCodeMutate({ postalCode: values.customerPostalCode as string });
+        postalCodeMutate({ postalCode: values.employeePostalCode as string });
       }, 500);
       return () => clearTimeout(timeOut);
     }
-  }, [values.customerPostalCode]);
+  }, [values.employeePostalCode]);
 
   const { mutateAsync: postalCodeMutate, isPending: searchingPincodeDetails } =
     usePostalCodeApi(onPostalCodeSuccess, onPostalCodeError);
@@ -200,7 +191,7 @@ export default function AddCustomer() {
             color: theme.palette.primary.main,
           }}
         >
-          Create Customer
+          Create Employee
         </Typography>
       </Box>
       <Box
@@ -217,60 +208,79 @@ export default function AddCustomer() {
         <Grid2 container spacing={2}>
           <Grid2
             size={{
-              xs: 6,
+              xs: 12,
+              sm: 4,
+              md: 4,
+              lg: 4,
             }}
           >
-            {/* Customer Name */}
+            {/* Employee Name */}
             <Box>
               <InputLabel required>Name</InputLabel>
               <TextField
                 size="small"
                 fullWidth
                 type="text"
-                name="customerName"
-                id="customerName"
-                placeholder="Name of customer"
-                value={values.customerName}
+                name="employeeName"
+                id="employeeName"
+                placeholder="Name of employee"
+                value={values.employeeName}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={touched.customerName && Boolean(errors.customerName)}
-                helperText={touched.customerName && errors.customerName}
+                error={touched.employeeName && Boolean(errors.employeeName)}
+                helperText={touched.employeeName && errors.employeeName}
               />
             </Box>
-
-            {/* Customer Email */}
+          </Grid2>
+          <Grid2
+            size={{
+              xs: 12,
+              sm: 4,
+              md: 4,
+              lg: 4,
+            }}
+          >
+            {/* Employee Email */}
             <Box>
               <InputLabel required>Email</InputLabel>
               <TextField
                 size="small"
                 fullWidth
                 type="email"
-                name="customerEmail"
-                id="customerEmail"
-                placeholder="Email of customer"
-                value={values.customerEmail}
+                name="employeeEmail"
+                id="employeeEmail"
+                placeholder="Email of employee"
+                value={values.employeeEmail}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={touched.customerEmail && Boolean(errors.customerEmail)}
-                helperText={touched.customerEmail && errors.customerEmail}
+                error={touched.employeeEmail && Boolean(errors.employeeEmail)}
+                helperText={touched.employeeEmail && errors.employeeEmail}
               />
             </Box>
-
-            {/* Customer Phone */}
+          </Grid2>
+          <Grid2
+            size={{
+              xs: 12,
+              sm: 4,
+              md: 4,
+              lg: 4,
+            }}
+          >
+            {/* Employee Phone */}
             <Box>
               <InputLabel required>Phone No.</InputLabel>
               <TextField
                 size="small"
                 fullWidth
                 type="tel"
-                name="customerPhone"
-                id="customerPhone"
+                name="employeePhone"
+                id="employeePhone"
                 placeholder="Phone Number"
-                value={values.customerPhone}
+                value={values.employeePhone}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={touched.customerPhone && Boolean(errors.customerPhone)}
-                helperText={touched.customerPhone && errors.customerPhone}
+                error={touched.employeePhone && Boolean(errors.employeePhone)}
+                helperText={touched.employeePhone && errors.employeePhone}
                 slotProps={{
                   input: {
                     startAdornment: (
@@ -280,20 +290,29 @@ export default function AddCustomer() {
                 }}
               />
             </Box>
-
+          </Grid2>
+          <Grid2
+            size={{
+              xs: 12,
+              sm: 4,
+              md: 4,
+              lg: 4,
+            }}
+          >
+            {/* Employee Gender */}
             <Box>
               <InputLabel required>Gender</InputLabel>
               <FormControl
                 fullWidth
                 error={
-                  touched?.customerGender && Boolean(errors?.customerGender)
+                  touched?.employeeGender && Boolean(errors?.employeeGender)
                 }
               >
                 <Select
-                  id="customerGender"
-                  name="customerGender"
+                  id="employeeGender"
+                  name="employeeGender"
                   size="small"
-                  value={values?.customerGender}
+                  value={values?.employeeGender}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   displayEmpty
@@ -305,37 +324,42 @@ export default function AddCustomer() {
                   <MenuItem value="female">Female</MenuItem>
                   <MenuItem value="others">Others</MenuItem>
                 </Select>
-                {touched?.customerGender && errors?.customerGender && (
-                  <FormHelperText>{errors?.customerGender}</FormHelperText>
+                {touched?.employeeGender && errors?.employeeGender && (
+                  <FormHelperText>{errors?.employeeGender}</FormHelperText>
                 )}
               </FormControl>
             </Box>
           </Grid2>
+
           <Grid2
             size={{
-              xs: 6,
+              xs: 12,
+              sm: 4,
+              md: 4,
+              lg: 4,
             }}
           >
+            {/* Employee Postal Code */}
             <Box>
               <InputLabel required>Postal Code</InputLabel>
               <TextField
                 size="small"
                 fullWidth
                 type="text"
-                name="customerPostalCode"
-                id="customerPostalCode"
+                name="employeePostalCode"
+                id="employeePostalCode"
                 placeholder="Enter code"
                 error={
-                  touched?.customerPostalCode &&
-                  Boolean(errors?.customerPostalCode)
+                  touched?.employeePostalCode &&
+                  Boolean(errors?.employeePostalCode)
                 }
-                value={values.customerPostalCode}
+                value={values.employeePostalCode}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 helperText={
-                  errors?.customerPostalCode &&
-                  touched?.customerPostalCode &&
-                  `${errors?.customerPostalCode}`
+                  errors?.employeePostalCode &&
+                  touched?.employeePostalCode &&
+                  `${errors?.employeePostalCode}`
                 }
                 slotProps={{
                   input: {
@@ -356,32 +380,35 @@ export default function AddCustomer() {
                 }}
               />
             </Box>
-
-            <Box
-              sx={{
-                display: "flex",
-                gap: 2,
-              }}
-            >
+          </Grid2>
+          <Grid2
+            size={{
+              xs: 12,
+              sm: 4,
+              md: 4,
+              lg: 4,
+            }}
+          >
+            <Box sx={{ display: "flex", gap: 2 }}>
               <Box>
                 <InputLabel required>Country</InputLabel>
                 <TextField
                   size="small"
                   fullWidth
                   type="text"
-                  name="customerCountry"
-                  id="customerCountry"
+                  name="employeeCountry"
+                  id="employeeCountry"
                   placeholder="Enter country"
                   error={
-                    touched?.customerCountry && Boolean(errors?.customerCountry)
+                    touched?.employeeCountry && Boolean(errors?.employeeCountry)
                   }
-                  value={values.customerCountry}
+                  value={values.employeeCountry}
                   onBlur={handleBlur}
                   onChange={handleChange}
                   helperText={
-                    errors?.customerCountry &&
-                    touched?.customerCountry &&
-                    `${errors?.customerCountry}`
+                    errors?.employeeCountry &&
+                    touched?.employeeCountry &&
+                    `${errors?.employeeCountry}`
                   }
                 />
               </Box>
@@ -391,104 +418,152 @@ export default function AddCustomer() {
                   size="small"
                   fullWidth
                   type="text"
-                  name="customerState"
-                  id="customerState"
+                  name="employeeState"
+                  id="employeeState"
                   placeholder="Enter state"
-                  value={values.customerState}
+                  value={values.employeeState}
                   onBlur={handleBlur}
                   onChange={handleChange}
                   error={
-                    touched?.customerState && Boolean(errors?.customerState)
+                    touched?.employeeState && Boolean(errors?.employeeState)
                   }
                   helperText={
-                    errors?.customerState &&
-                    touched?.customerState &&
-                    `${errors?.customerState}`
+                    errors?.employeeState &&
+                    touched?.employeeState &&
+                    `${errors?.employeeState}`
                   }
                 />
               </Box>
             </Box>
+          </Grid2>
+          <Grid2
+            size={{
+              xs: 12,
+              sm: 4,
+              md: 4,
+              lg: 4,
+            }}
+          >
+            {/* Employee City */}
             <Box>
               <InputLabel required>City</InputLabel>
               <TextField
                 size="small"
                 fullWidth
                 type="text"
-                name="customerCity"
-                id="customerCity"
+                name="employeeCity"
+                id="employeeCity"
                 placeholder="Enter city"
-                error={touched?.customerCity && Boolean(errors?.customerCity)}
-                value={values.customerCity}
+                error={touched?.employeeCity && Boolean(errors?.employeeCity)}
+                value={values.employeeCity}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 helperText={
-                  errors?.customerCity &&
-                  touched?.customerCity &&
-                  `${errors?.customerCity}`
+                  errors?.employeeCity &&
+                  touched?.employeeCity &&
+                  `${errors?.employeeCity}`
                 }
-              />
-            </Box>
-            {/* Customer Address */}
-            <Box>
-              <InputLabel>Address</InputLabel>
-              <TextField
-                size="small"
-                fullWidth
-                type="text"
-                name="customerAddress"
-                id="customerAddress"
-                placeholder="Address"
-                value={values.customerAddress}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={
-                  touched.customerAddress && Boolean(errors.customerAddress)
-                }
-                helperText={touched.customerAddress && errors.customerAddress}
               />
             </Box>
           </Grid2>
           <Grid2
             size={{
               xs: 12,
+              sm: 4,
+              md: 4,
+              lg: 4,
             }}
           >
-            {/* Customer Balance */}
+            {/* Employee Address */}
             <Box>
-              <InputLabel required>Balance</InputLabel>
+              <InputLabel>Address</InputLabel>
               <TextField
                 size="small"
                 fullWidth
-                type="number"
-                name="customerBalance"
-                id="customerBalance"
-                placeholder="Balance"
-                value={values.customerBalance || ""}
+                type="text"
+                name="employeeAddress"
+                id="employeeAddress"
+                placeholder="Address"
+                value={values.employeeAddress}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 error={
-                  touched.customerBalance && Boolean(errors.customerBalance)
+                  touched.employeeAddress && Boolean(errors.employeeAddress)
                 }
-                helperText={touched.customerBalance && errors.customerBalance}
+                helperText={touched.employeeAddress && errors.employeeAddress}
               />
             </Box>
           </Grid2>
+
+          {/* Employee Password */}
+          <Grid2
+            size={{
+              xs: 12,
+              sm: 4,
+              md: 4,
+              lg: 4,
+            }}
+          >
+            <Box>
+              <InputLabel required>Password</InputLabel>
+              <TextField
+                size="small"
+                fullWidth
+                type="password"
+                name="employeePassword"
+                id="employeePassword"
+                placeholder="Password"
+                value={values.employeePassword}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.employeePassword && Boolean(errors.employeePassword)}
+                helperText={touched.employeePassword && errors.employeePassword}
+              />
+            </Box>
+          </Grid2>
+
+          {/* Employee Photo */}
+          {/* <Grid2
+            size={{
+              xs: 12,
+              sm: 4,
+              md: 4,
+              lg: 4,
+            }}
+          >
+            <Box>
+              <InputLabel required>Photo</InputLabel>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  setFieldValue("employeePhoto", file);
+                }}
+                onBlur={handleBlur}
+              />
+              {touched.employeePhoto && errors.employeePhoto && (
+                <FormHelperText error>{errors.employeePhoto}</FormHelperText>
+              )}
+            </Box>
+          </Grid2> */}
         </Grid2>
 
         {/* Submit Button */}
-        <Box sx={{ p: 1, mt: 2 }}>
+        <Box sx={{ p: 1, mt: 2, textAlign: "right" }}>
           <Button
             type="submit"
             variant="contained"
             sx={{
               px: 11,
-              display: "flex",
-              justifyContent: "center",
-              width: "100%",
+              width: {
+                xs: "100%",
+                md: "30%",
+              },
             }}
             size="small"
           >
-            Add Customer
+            Add Employee
           </Button>
         </Box>
       </Box>

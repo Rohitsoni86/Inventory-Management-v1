@@ -1,24 +1,35 @@
 "use client";
-import {
-  Box,
-  Button,
-  InputLabel,
-  Paper,
-  TextField,
-  Typography,
-  useTheme,
-} from "@mui/material";
-import React, { useState } from "react";
+import { Box, Button, InputLabel, Paper, TextField, Typography, useTheme } from "@mui/material";
+import React from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup"; // For validation
+
+// Yup validation schema for the category name
+const CategorySchema = Yup.object({
+  categoryName: Yup.string()
+    .required("Category name is required")
+    .min(3, "Category name must be at least 3 characters")
+    .max(50, "Category name must be less than 50 characters")
+    .trim(),
+});
 
 const AddCategory = () => {
   const theme = useTheme();
 
-  const [category, setCategory] = useState("");
+  // Formik setup
+  const { values, handleChange, handleSubmit, errors, touched } = useFormik({
+    initialValues: {
+      categoryName: "",
+    },
+    validationSchema: CategorySchema,
+    onSubmit: async (values) => {
+      console.log("Category Created:", values);
+      // Call the API or logic for creating the category here
+      // After successful submission, reset the form
+      values.categoryName = "";
+    },
+  });
 
-  const handleCreateCategory = () => {
-    // Api call
-    setCategory("");
-  };
   return (
     <Paper
       sx={{
@@ -49,6 +60,8 @@ const AddCategory = () => {
       </Box>
 
       <Box
+        component="form"
+        onSubmit={handleSubmit}
         sx={{
           px: 1,
         }}
@@ -60,35 +73,35 @@ const AddCategory = () => {
           required
           fullWidth
           type="text"
-          autoComplete="email"
+          autoComplete="off"
           name="categoryName"
           id="categoryName"
           placeholder="Name.."
-          value={category}
-          onChange={(e) => {
-            setCategory(e.target.value);
-          }}
+          value={values.categoryName}
+          onChange={handleChange}
+          error={touched.categoryName && Boolean(errors.categoryName)}
+          helperText={touched.categoryName && errors.categoryName}
         />
-      </Box>
-      <Box
-        sx={{
-          px: 1,
-        }}
-      >
-        <Button
-          type="button"
-          variant="contained"
+
+        <Box
           sx={{
-            px: 11,
-            display: "flex",
-            justifyContent: "center",
-            width: "100%",
+            pt: 2,
           }}
-          size="small"
-          onClick={handleCreateCategory}
         >
-          Add
-        </Button>
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{
+              px: 11,
+              display: "flex",
+              justifyContent: "center",
+              width: "100%",
+            }}
+            size="small"
+          >
+            Add
+          </Button>
+        </Box>
       </Box>
     </Paper>
   );

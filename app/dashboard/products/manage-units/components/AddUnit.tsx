@@ -1,24 +1,35 @@
 "use client";
-import {
-  Box,
-  Button,
-  InputLabel,
-  Paper,
-  TextField,
-  Typography,
-  useTheme,
-} from "@mui/material";
-import React, { useState } from "react";
+import { Box, Button, InputLabel, Paper, TextField, Typography, useTheme } from "@mui/material";
+import React from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup"; // For validation
 
-export default function AddUnit() {
+// Yup validation schema for the unit name
+const UnitSchema = Yup.object({
+  unit: Yup.string()
+    .required("Unit name is required")
+    .min(2, "Unit name must be at least 2 characters")
+    .max(50, "Unit name must be less than 50 characters")
+    .trim(),
+});
+
+const AddUnit = () => {
   const theme = useTheme();
 
-  const [unit, setUnit] = useState("");
+  // Formik setup
+  const { values, handleChange, handleSubmit, errors, touched } = useFormik({
+    initialValues: {
+      unit: "",
+    },
+    validationSchema: UnitSchema,
+    onSubmit: async (values) => {
+      console.log("Unit Created:", values);
+      // Call the API or logic for creating the unit here
+      // After successful submission, reset the form
+      values.unit = "";
+    },
+  });
 
-  const handleCreateCategory = () => {
-    // Api call
-    setUnit("");
-  };
   return (
     <Paper
       sx={{
@@ -49,6 +60,8 @@ export default function AddUnit() {
       </Box>
 
       <Box
+        component="form"
+        onSubmit={handleSubmit}
         sx={{
           px: 1,
         }}
@@ -60,36 +73,38 @@ export default function AddUnit() {
           required
           fullWidth
           type="text"
-          autoComplete="email"
+          autoComplete="off"
           name="unit"
           id="unit"
           placeholder="Name.."
-          value={unit}
-          onChange={(e) => {
-            setUnit(e.target.value);
-          }}
+          value={values.unit}
+          onChange={handleChange}
+          error={touched.unit && Boolean(errors.unit)}
+          helperText={touched.unit && errors.unit}
         />
-      </Box>
-      <Box
-        sx={{
-          px: 1,
-        }}
-      >
-        <Button
-          type="button"
-          variant="contained"
+
+        <Box
           sx={{
-            px: 11,
-            display: "flex",
-            justifyContent: "center",
-            width: "100%",
+            pt: 2,
           }}
-          size="small"
-          onClick={handleCreateCategory}
         >
-          Add
-        </Button>
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{
+              px: 11,
+              display: "flex",
+              justifyContent: "center",
+              width: "100%",
+            }}
+            size="small"
+          >
+            Add
+          </Button>
+        </Box>
       </Box>
     </Paper>
   );
-}
+};
+
+export default AddUnit;

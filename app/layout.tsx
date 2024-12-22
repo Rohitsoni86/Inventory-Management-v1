@@ -14,11 +14,11 @@ const quicksand = Quicksand({
 });
 
 export const metadata: Metadata = {
-  title: "Chikitsa SDK",
-  description: "Chikitsa SDK",
-  icons: {
-    icon: "/logo.ico",
-  },
+  title: "Invento",
+  description: "Invento",
+  // icons: {
+  //   icon: "/logo.ico",
+  // },
 };
 
 export default function RootLayout({

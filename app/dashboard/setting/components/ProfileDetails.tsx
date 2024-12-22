@@ -1,6 +1,7 @@
 "use client";
 import {
   Box,
+  Button,
   Grid2,
   IconButton,
   InputAdornment,
@@ -47,7 +48,7 @@ export default function AdminDetailsForm({
         <Grid2
           size={{
             xs: 12,
-            md: 6,
+            md: 4,
           }}
         >
           <Box>
@@ -121,25 +122,14 @@ export default function AdminDetailsForm({
         <Grid2
           size={{
             xs: 12,
-            md: 6,
+            md: 4,
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              flexWrap: {
-                xs: "wrap",
-                md: "nowrap",
-              },
-              gap: 2,
-            }}
-          >
+          
             <Box>
               <InputLabel required>Email</InputLabel>
               <TextField
                 size="small"
-                autoFocus={false}
                 required
                 fullWidth
                 error={touched?.adminEmail && Boolean(errors?.adminEmail)}
@@ -147,7 +137,7 @@ export default function AdminDetailsForm({
                 autoComplete="off"
                 name="adminEmail"
                 id="adminEmail"
-                placeholder="Enter your email or phone number"
+                placeholder="Enter your email"
                 value={values.adminEmail}
                 onBlur={handleBlur}
                 onChange={handleChange}
@@ -158,7 +148,15 @@ export default function AdminDetailsForm({
                 }
               />
             </Box>
-            <Box>
+         
+        </Grid2>
+        <Grid2
+          size={{
+            xs: 12,
+            md: 4,
+          }}
+        >
+           <Box>
               <InputLabel required>Phone</InputLabel>
               <CountryCodeInput<SignUpFields>
                 values={values}
@@ -172,8 +170,8 @@ export default function AdminDetailsForm({
                 callingCode="adminCountryCode"
               />
             </Box>
-          </Box>
         </Grid2>
+       
       </Grid2>
     </>
   );

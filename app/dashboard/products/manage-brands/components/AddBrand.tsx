@@ -1,24 +1,35 @@
 "use client";
-import {
-  Box,
-  Button,
-  InputLabel,
-  Paper,
-  TextField,
-  Typography,
-  useTheme,
-} from "@mui/material";
-import React, { useState } from "react";
+import { Box, Button, InputLabel, Paper, TextField, Typography, useTheme } from "@mui/material";
+import React from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup"; // For validation
+
+// Yup validation schema for the brand name
+const BrandSchema = Yup.object({
+  brand: Yup.string()
+    .required("Brand name is required")
+    .min(3, "Brand name must be at least 3 characters")
+    .max(50, "Brand name must be less than 50 characters")
+    .trim(),
+});
 
 export default function AddBrands() {
   const theme = useTheme();
 
-  const [brand, setBrand] = useState("");
+  // Formik setup
+  const { values, handleChange, handleSubmit, errors, touched } = useFormik({
+    initialValues: {
+      brand: "",
+    },
+    validationSchema: BrandSchema,
+    onSubmit: async (values) => {
+      console.log("Brand Created:", values);
+      // You can call an API to create the brand here
+      // After successful submission, reset the form
+      values.brand = "";
+    },
+  });
 
-  const handleCreateBrand = () => {
-    // Api call
-    setBrand("");
-  };
   return (
     <Paper
       sx={{
@@ -49,6 +60,8 @@ export default function AddBrands() {
       </Box>
 
       <Box
+        component="form"
+        onSubmit={handleSubmit}
         sx={{
           px: 1,
         }}
@@ -57,37 +70,37 @@ export default function AddBrands() {
         <TextField
           size="medium"
           autoFocus
-          required
+          // required
           fullWidth
           type="text"
           name="brand"
           id="brand"
           placeholder="Name.."
-          value={brand}
-          onChange={(e) => {
-            setBrand(e.target.value);
-          }}
+          value={values.brand}
+          onChange={handleChange}
+          error={touched.brand && Boolean(errors.brand)}
+          helperText={touched.brand && errors.brand}
         />
-      </Box>
-      <Box
-        sx={{
-          px: 1,
-        }}
-      >
-        <Button
-          type="button"
-          variant="contained"
+
+        <Box
           sx={{
-            px: 11,
-            display: "flex",
-            justifyContent: "center",
-            width: "100%",
+            pt: 2,
           }}
-          size="small"
-          onClick={handleCreateBrand}
         >
-          Add
-        </Button>
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{
+              px: 11,
+              display: "flex",
+              justifyContent: "center",
+              width: "100%",
+            }}
+            size="small"
+          >
+            Add
+          </Button>
+        </Box>
       </Box>
     </Paper>
   );

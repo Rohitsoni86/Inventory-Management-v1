@@ -578,7 +578,6 @@ const CreateProductPage = () => {
               <TextField
                 variant="outlined"
                 size="small"
-                autoFocus={true}
                 autoComplete="off"
                 type="text"
                 fullWidth
@@ -608,7 +607,6 @@ const CreateProductPage = () => {
               <TextField
                 variant="outlined"
                 size="small"
-                autoFocus={true}
                 autoComplete="off"
                 type="text"
                 fullWidth
@@ -789,7 +787,6 @@ const CreateProductPage = () => {
               <TextField
                 variant="outlined"
                 size="small"
-                autoFocus={true}
                 autoComplete="off"
                 type="text"
                 fullWidth
