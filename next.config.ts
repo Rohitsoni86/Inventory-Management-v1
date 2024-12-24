@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 import path from "path";
 const nextConfig: NextConfig = {
   env: {
-    // BASE_URL: "https://api.chikitsa.dev",
+    BASE_URL: "http://localhost:4000",
   },
   images: {
     remotePatterns: [

@@ -21,7 +21,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import Link from "next/link";
 import LoginFields from "@/models/userModel";
 import { loginSchema } from "@/schema/userLoginSchema";
-import { useLogin } from "@/api/auth-api";
+import { useAdminLogin } from "@/api/auth-api";
 import { AxiosError, AxiosResponse } from "axios";
 import ErrorData from "@/models/apiError";
 import {
@@ -33,6 +33,7 @@ import {
   setUser,
 } from "./store/features/userDetails/userDetailsSlice";
 import { useAppDispatch } from "./store/hooks";
+import { setSuperAdminUserInfo } from "./store/features/userDetails/superAdminAuth";
 
 export default function Home() {
   const dispatch = useAppDispatch();
@@ -59,50 +60,47 @@ export default function Home() {
       validationSchema: loginSchema,
       onSubmit: async (values) => {
         console.log("Submit Called", values);
-        // mutateAsync(values);
+        mutateAsync(values);
       },
     });
 
-  // const onLoginSuccess = (data: AxiosResponse) => {
-  //   console.log("Login Success Data", data?.data?.user);
-  //   console.log("Login Success Data", data?.data?.organization);
-  //   console.log("Login Success Data", data?.data?.tokens);
+  const onLoginSuccess = (data: AxiosResponse) => {
+    console.log("Login Success Data", data?.data?.data?.mfaEnabled);
 
-  //   const { id, email, firstName, lastName, role, organizationId } =
-  //     data.data.user;
-  //   setOpenToastSuccess(true);
-  //   setMessage("Login Successful");
-  //   dispatch(
-  //     setUser({
-  //       id,
-  //       email,
-  //       name: `${firstName} ${lastName}`,
-  //       role,
-  //       organizationId,
-  //       legalName: data?.data?.organization?.legalName,
-  //       isLoggedIn: true,
-  //     })
-  //   );
-  //   storeTokensInCookies(
-  //     data?.data?.tokens.accessToken,
-  //     data?.data?.tokens.refreshToken
-  //   );
-  //   router.push("/dashboard");
-  // };
+    if (data?.data?.data?.mfaEnabled) {
+      const { mfaEnabled, secret } = data?.data?.data;
+      setOpenToastSuccess(true);
+      setMessage("Login Successful");
+      dispatch(
+        setSuperAdminUserInfo({
+          mfa: mfaEnabled,
+          secret,
+          isLoggedIn: false,
+        })
+      );
+      router.push("/verify-admin");
+    } else {
+    }
 
-  // const onLoginError = (error: AxiosError<ErrorData>) => {
-  //   setOpenToastError(true);
-  //   setMessage(error?.response?.data?.message || error.message);
-  //   console.error("Login Error Data", error);
-  //   dispatch(clearUser());
-  //   clearAllCookies();
-  // };
+    // storeTokensInCookies(
+    //   data?.data?.tokens.accessToken,
+    //   data?.data?.tokens.refreshToken
+    // );
+    // router.push("/dashboard");
+  };
 
-  // const { mutateAsync, isPending: loginLoading } = useLogin(
-  //   onLoginSuccess,
-  //   onLoginError
-  // );
+  const onLoginError = (error: AxiosError<ErrorData>) => {
+    setOpenToastError(true);
+    setMessage(error?.response?.data?.message || error.message);
+    console.error("Login Error Data", error);
+    dispatch(clearUser());
+    clearAllCookies();
+  };
 
+  const { mutateAsync, isPending: loginLoading } = useAdminLogin(
+    onLoginSuccess,
+    onLoginError
+  );
 
   return (
     <Container maxWidth="xl">
@@ -188,8 +186,8 @@ export default function Home() {
                     textAlign: "center",
                   }}
                 >
-                  Log in to manage your Inventory, explore real-time insights, and
-                  unlock scalable solutions. Continue driving growth and
+                  Log in to manage your Inventory, explore real-time insights,
+                  and unlock scalable solutions. Continue driving growth and
                   elevating your digital journey!
                 </Typography>
               </Box>
@@ -412,7 +410,6 @@ export default function Home() {
     </Container>
   );
 }
-
 
 // import React from 'react';
 // import { Autocomplete, TextField } from '@mui/material';

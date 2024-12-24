@@ -1,8 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./features/userDetails/userDetailsSlice";
+import userSuperAdminInfoReducer from "./features/userDetails/userDetailsSlice";
+
 export const makeStore = () => {
   return configureStore({
-    reducer: { user: userReducer },
+    reducer: {
+      user: userReducer,
+      userSuperAdminInfo: userSuperAdminInfoReducer,
+    },
   });
 };
 

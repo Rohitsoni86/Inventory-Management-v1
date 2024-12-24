@@ -7,12 +7,12 @@ import { userApiInterceptor } from "./Interceptor/Interceptor";
 
 const login = async (body: { email: string; password: string }) => {
   return await userApiInterceptor.post(
-    `${process.env.BASE_URL}/api/v1/user/login`,
+    `${process.env.BASE_URL}/api/v1/admin/login`,
     body
   );
 };
 
-export const useLogin = (
+export const useAdminLogin = (
   onSuccess: (data: AxiosResponse) => void,
   onError: (error: AxiosError<ErrorData>) => void
 ) => {
