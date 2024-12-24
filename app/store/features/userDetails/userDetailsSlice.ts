@@ -10,7 +10,7 @@ const initialState: loggedInUserInfo = {
   id: "",
   email: "",
   name: "",
-  role: "",
+  role: [""],
   organizationId: "",
   legalName: "",
   isLoggedIn: false,
@@ -26,7 +26,7 @@ const userSlice = createSlice({
       state.id = id;
       state.email = email;
       state.name = name;
-      state.role = role;
+      state.role = [...role];
       state.organizationId = organizationId;
       state.legalName = legalName;
       state.isLoggedIn = isLoggedIn || true;
@@ -36,7 +36,7 @@ const userSlice = createSlice({
       state.id = "";
       state.email = "";
       state.name = "";
-      state.role = "";
+      state.role = [""];
       state.organizationId = "";
       state.legalName = "";
       state.isLoggedIn = false;

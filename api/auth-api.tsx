@@ -5,7 +5,7 @@ import ErrorData from "@/models/apiError";
 import SignUpFields from "@/models/userSignUpModel";
 import { userApiInterceptor } from "./Interceptor/Interceptor";
 
-const login = async (body: { email: string; password: string }) => {
+const loginAdmin = async (body: { email: string; password: string }) => {
   return await userApiInterceptor.post(
     `${process.env.BASE_URL}/api/v1/admin/login`,
     body
@@ -17,7 +17,26 @@ export const useAdminLogin = (
   onError: (error: AxiosError<ErrorData>) => void
 ) => {
   return useMutation({
-    mutationFn: login,
+    mutationFn: loginAdmin,
+    onSuccess: onSuccess,
+    onError: onError,
+  });
+};
+
+
+const employeeLogin = async (body: { email: string; password: string }) => {
+  return await userApiInterceptor.post(
+    `${process.env.BASE_URL}/api/v1/employee/login`,
+    body
+  );
+};
+
+export const useEmployeeLogin = (
+  onSuccess: (data: AxiosResponse) => void,
+  onError: (error: AxiosError<ErrorData>) => void
+) => {
+  return useMutation({
+    mutationFn: employeeLogin,
     onSuccess: onSuccess,
     onError: onError,
   });

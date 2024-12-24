@@ -5,7 +5,7 @@ const initialState: loggedInUserSuperAdminInfo = {
   id: "",
   email: "",
   name: "",
-  role: "",
+  role: [""],
   mfa: "",
   secret: "",
   isLoggedIn: false,
@@ -23,7 +23,7 @@ const userSuperAdminSlice = createSlice({
       state.id = id;
       state.email = email;
       state.name = name;
-      state.role = role;
+      state.role = role ? [...role] : [""];
       state.mfa = mfa;
       state.secret = secret;
       state.isLoggedIn = isLoggedIn || true;
@@ -33,7 +33,7 @@ const userSuperAdminSlice = createSlice({
       state.id = "";
       state.email = "";
       state.name = "";
-      state.role = "";
+      state.role = [""];
       state.mfa = "";
       state.secret = "";
       state.isLoggedIn = false;
